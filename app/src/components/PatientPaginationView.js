@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PatientDataView from './PatientDataView';
+import './PatientPaginationView.css'
 
 class PatientPaginationView extends Component {
 
@@ -156,10 +157,10 @@ class PatientPaginationView extends Component {
             renderNextBtn = <li className={isNextBtnActive}><a href='#' id="btnNext" onClick={this.btnNextClick}> Next </a></li>
         }
 
-        if (data.currentPage) {
+        if (data[currentPage]) {
             return (
                 <div>
-                    <ul>
+                    <ul className="pagination">
                         {renderPrevBtn}
                         {pageDecrementBtn}
                         {renderPageNumbers}
@@ -175,8 +176,8 @@ class PatientPaginationView extends Component {
         }
 
         return (
-			<div/>
-			);
+            <div />
+        );
     }
 }
 

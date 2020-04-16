@@ -27,7 +27,7 @@ class App extends Component {
             newState = newData;
         }
 
-        this.setState({ data: newState, results: this.state.results })
+        this.setState({ data: newState })
     }
 
     render() {

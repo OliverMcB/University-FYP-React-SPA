@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './PatientDataView.css';
 
 class PatientDataView extends Component {
 
@@ -9,6 +10,10 @@ class PatientDataView extends Component {
         this.state = { data: props.data, index: props.index };
     }
 
+    handlePatientInfoChange(key) {
+
+    }
+
     render() {
 
         return (
@@ -16,15 +21,15 @@ class PatientDataView extends Component {
                 
                 <h4>Patient Information</h4>
 
-                {this.state.data.map((patientInfo, index) => (
+                {Object.keys(this.state.data).map((key, index) => (
                     <div>
-                        <label
-                            value={patientInfo.key}
-                            />
+                        <label className="Label">
+                            {key}
+                        </label>
                         <input
                             type="text"
-                            value={patientInfo.value}
-                            onChange={this.handlePatientInfoChange(patientInfo.key)}
+                            value={this.state.data[key]}
+                            onChange={this.handlePatientInfoChange(key)}
                         />
                     </div>
                 ))}
