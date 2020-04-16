@@ -3,6 +3,11 @@
     color: #00A4FF;
 }
 
-.Upload-Text{
+.Upload-Text {
     font-size: 32px;
+}
+
+.Upload-Input-Text {
+    font-size:15px;
+    width:70%;
 }
