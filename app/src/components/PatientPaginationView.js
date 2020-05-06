@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PatientDataView from './PatientDataView';
+import Results from './Results';
 import './PatientPaginationView.css'
 
 class PatientPaginationView extends Component {
@@ -24,8 +25,34 @@ class PatientPaginationView extends Component {
         this.btnIncrementClick = this.btnIncrementClick.bind(this);
         this.btnNextClick = this.btnNextClick.bind(this);
         this.btnPrevClick = this.btnPrevClick.bind(this);
-        // this.componentDidMount = this.componentDidMount.bind(this);
         this.setPrevAndNextBtnClass = this.setPrevAndNextBtnClass.bind(this);
+
+        this.updateData = this.updateData.bind(this);
+        this.updateResult = this.updateResult.bind(this);
+    }
+
+    updateData(newData, index) {
+
+        let newDataState = this.state.data;
+
+        newDataState[index] = newData;
+
+        this.setState({ data: newDataState });
+
+        this.props.updateData(this.state.data)
+    }
+
+    updateResult(result, index) {
+
+        let newResultState = this.state.results;
+
+        newResultState[index] = result.slice(1, result.indexOf('.') + 3 );
+
+        this.setState({ results: newResultState });
+
+        this.props.updateResult(this.state.results)
+
+        console.log(this.state.results)
     }
 
     handleClick(event) {
@@ -124,53 +151,64 @@ class PatientPaginationView extends Component {
         const renderPageNumbers = pageNumbers.map((number) => {
             if (number === currentPage) {
                 return (
-                    <li key={number} className='active' id={number}><a href='#' id={number} onClick={this.handleClick}>{number}</a></li>
+                    <li key={number} className='page-item active' id={number}><a href='#' className='page-link' id={number} onClick={this.handleClick}>{number}</a></li>
                 )
             }
             else if ((number < upperPageBound + 1) && number > lowerPageBound) {
                 return (
-                    <li key={number} id={number}><a href='#' id={number} onClick={this.handleClick}>{number}</a></li>
+                    <li key={number} className='page-item' id={number}><a href='#' className='page-link' id={number} onClick={this.handleClick}>{number}</a></li>
                 )
             }
         });
 
         let pageIncrementBtn = null;
         if (pageNumbers.length > upperPageBound) {
-            pageIncrementBtn = <li className=''><a href='#' onClick={this.btnIncrementClick}> &hellip; </a></li>
+            pageIncrementBtn = <li className='page-link'><a href='#' onClick={this.btnIncrementClick}> &hellip; </a></li>
         }
         let pageDecrementBtn = null;
         if (lowerPageBound >= 1) {
-            pageDecrementBtn = <li className=''><a href='#' onClick={this.btnDecrementClick}> &hellip; </a></li>
+            pageDecrementBtn = <li className='page-link'><a href='#' onClick={this.btnDecrementClick}> &hellip; </a></li>
         }
         let renderPrevBtn = null;
         if (isPrevBtnActive === 'disabled') {
-            renderPrevBtn = <li className={isPrevBtnActive}><span id="btnPrev"> Prev </span></li>
+            renderPrevBtn = null
         }
         else {
-            renderPrevBtn = <li className={isPrevBtnActive}><a href='#' id="btnPrev" onClick={this.btnPrevClick}> Prev </a></li>
+            renderPrevBtn = <li className={isPrevBtnActive}><a className='page-link' href='#' id="btnPrev" onClick={this.btnPrevClick}> Prev </a></li>
         }
         let renderNextBtn = null;
         if (isNextBtnActive === 'disabled') {
-            renderNextBtn = <li className={isNextBtnActive}><span id="btnNext"> Next </span></li>
+            renderNextBtn = null
         }
         else {
-            renderNextBtn = <li className={isNextBtnActive}><a href='#' id="btnNext" onClick={this.btnNextClick}> Next </a></li>
+            renderNextBtn = <li className={isNextBtnActive}><a className='page-link' href='#' id="btnNext" onClick={this.btnNextClick}> Next </a></li>
         }
 
         if (data[currentPage]) {
+
             return (
-                <div>
-                    <ul className="pagination">
-                        {renderPrevBtn}
-                        {pageDecrementBtn}
-                        {renderPageNumbers}
-                        {pageIncrementBtn}
-                        {renderNextBtn}
-                    </ul>
-                    <PatientDataView
-                        data={this.state.data[this.state.currentPage]}
-                        index={this.state.currentPage}
-                    />
+                <div align='center'>
+                    <div className="d-flex flex-row py-4 align-items-center">
+                        <ul className="pagination">
+                            {renderPrevBtn}
+                            {pageDecrementBtn}
+                            {renderPageNumbers}
+                            {pageIncrementBtn}
+                            {renderNextBtn}
+                        </ul>
+                    </div>
+                    <div className="data-container">
+                        <PatientDataView
+                            className="data"
+                            data={this.state.data[this.state.currentPage-1]}
+                            index={this.state.currentPage-1}
+                            updateData={this.updateData}
+                            updateResult={this.updateResult}
+                        />
+                        <Results
+                            className="results"
+                            result={this.state.results[this.state.currentPage-1]} />
+                    </div>
                 </div>
             );
         }

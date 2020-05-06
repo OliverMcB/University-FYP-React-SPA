@@ -18,6 +18,7 @@ class Upload extends Component {
             csv.parse(reader.result, (err, data) => {
 
                 var dataList = [];
+                var resultList = [];
 
                 for (var i = 0; i < data.length; i++) {
 
@@ -29,7 +30,7 @@ class Upload extends Component {
                             "Cancer Type Detailed": data[i][2],
                             "Cellularity": data[i][3],
                             "Chemotherapy": data[i][4],
-                            "Pam50 + Claudin - low subtype": data[i][5],
+                            "Pam50 Claudin-low subtype": data[i][5],
                             "Cohort": data[i][6],
                             "ER status measured by IHC": data[i][7],
                             "ER Status": data[i][8],
@@ -47,16 +48,17 @@ class Upload extends Component {
                             "Oncotree Code": data[i][20],
                             "PR Status": data[i][21],
                             "Radio Therapy": data[i][22],
-                            "3 - Gene classifier subtype": data[i][23],
+                            "3-Gene classifier subtype": data[i][23],
                             "Tumor Size": data[i][24],
                             "Tumor Stage": data[i][25]
                         };
 
                         dataList.push(newData);
+                        resultList.push(0);
                     }
                 };
 
-                this.props.updateData(dataList);
+                this.props.updateData(dataList, resultList);
             });
         };
 
